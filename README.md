@@ -105,5 +105,4 @@ Two training losses available:
 * `nt_xent_loss`: Normalized Temperature-scaled Cross Entropy (contrastive loss)
 * `pairwise_bce_loss`: Binary classification on all fragment pairs (positive/negative)
 
-```
 
