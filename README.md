@@ -11,7 +11,7 @@ This project trains a neural encoder to produce meaningful embeddings for image 
 
 ### ➤ Run metrics on the validation set
 
-By default, this samples **10 images at a time**, repeating the process 25× to robustly evaluate the model on ~500 images (10% of the full validation set):
+By default, this samples **10 images at a time**, repeating the process 50× to robustly evaluate the model on ~500 images (10% of the full validation set):
 
 ```bash
 python collect_metrics.py --data_path "data" --model_checkpoint "model/best_model_CL_8.weights.h5"
