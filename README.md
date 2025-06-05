@@ -46,7 +46,7 @@ This will generate:
 To retrain the model from scratch using either contrastive loss (NT-Xent) or pairwise BCE:
 
 ```bash
-# For contrastive loss
+# For contrastive loss (NT-Xent)
 python train.py -CL
 
 # For BCE loss
