@@ -73,6 +73,7 @@ You can change the embedding dimension or training steps by editing `train.py`.
 │   ├── collect_metrics.py # CLI evaluation script
 │   ├── visualize_only.py  # CLI visualization script
 ├── README.md
+├── requirements.txt
 ```
 
 ---
