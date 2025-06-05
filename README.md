@@ -47,10 +47,10 @@ To retrain the model from scratch using either contrastive loss (NT-Xent) or pai
 
 ```bash
 # For contrastive loss (NT-Xent)
-python src/train.py --loss CL
+python src/main.py --loss CL
 
 # For BCE loss
-python src/train.py --loss BCE
+python src/main.py --loss BCE
 ```
 
 Checkpoints will be saved to the `model/` folder as:
