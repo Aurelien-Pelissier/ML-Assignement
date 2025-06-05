@@ -1,0 +1,7 @@
+tensorflow>=2.9.0
+scikit-learn>=1.1.0
+#scikit-learn-extra>=0.3.0  # for KMeansConstrained (used optionally)
+matplotlib>=3.5.0
+umap-learn>=0.5.3
+tqdm>=4.64.0
+numpy>=1.21.0
