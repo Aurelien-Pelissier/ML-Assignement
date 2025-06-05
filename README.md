@@ -14,7 +14,7 @@ This project trains a neural encoder to produce meaningful embeddings for image 
 By default, this samples **10 images at a time**, repeating the process 50× to robustly evaluate the model on ~500 images (10% of the full validation set):
 
 ```bash
-python collect_metrics.py --data_path "data" --model_checkpoint "model/best_model_CL_8.weights.h5"
+python src/collect_metrics.py --data_path "data" --model_checkpoint "model/best_model_CL_8.keras"
 ````
 
 This evaluates the model by:
@@ -30,7 +30,7 @@ This evaluates the model by:
 To visualize clustering and similarities for a **single batch of 10 validation images**, run:
 
 ```bash
-python visualize_only.py --data_path "data" --model_checkpoint "model/best_model_CL_8.weights.h5"
+python src/visualize_only.py --data_path "data" --model_checkpoint "model/best_model_CL_8.keras"
 ```
 
 This will generate:
@@ -47,10 +47,10 @@ To retrain the model from scratch using either contrastive loss (NT-Xent) or pai
 
 ```bash
 # For contrastive loss (NT-Xent)
-python train.py -CL
+python src/main.py --loss CL
 
 # For BCE loss
-python train.py -BCE
+python src/main.py --loss BCE
 ```
 
 Checkpoints will be saved to the `model/` folder as:
@@ -70,9 +70,10 @@ You can change the embedding dimension or training steps by editing `train.py`.
 ├── Figure/               # Evaluation plots
 ├── src/
 │   ├── train.py          # Training and evaluation logic
-│   ├── collect_metrics.py # CLI evaluation script
-│   ├── visualize_only.py  # CLI visualization script
+│   ├── collect_metrics.py # Evaluation script
+│   ├── visualize_only.py  # Visualization script
 ├── README.md
+├── requirements.txt
 ```
 
 ---
