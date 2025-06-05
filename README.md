@@ -70,8 +70,8 @@ You can change the embedding dimension or training steps by editing `train.py`.
 ├── Figure/               # Evaluation plots
 ├── src/
 │   ├── train.py          # Training and evaluation logic
-│   ├── collect_metrics.py # CLI evaluation script
-│   ├── visualize_only.py  # CLI visualization script
+│   ├── collect_metrics.py # Evaluation script
+│   ├── visualize_only.py  # Visualization script
 ├── README.md
 ├── requirements.txt
 ```
