@@ -1,4 +1,5 @@
 import numpy as np
+import argparse
 import tensorflow as tf
 from sklearn.cluster import KMeans
 from sklearn.metrics import adjusted_rand_score
@@ -28,12 +29,8 @@ N_FRAGMENTS = FRAG_PER_DIM * FRAG_PER_DIM
 TEMPERATURE = 0.1
 
 EMBEDDING_DIM = 8
-
-METRIC = 'euclidean'
-
 METRIC = 'cosine'
 
-#Euclidean vs Cosine
 
 
 
@@ -56,7 +53,7 @@ def evaluate_performances(dataset, encoder, loss_func, sample_size=10, repeat = 
         frag_batch = tf.convert_to_tensor(fragments, dtype=tf.float32)
         label_batch = tf.convert_to_tensor(labels, dtype=tf.int32)
 
-        embeddings = encoder(frag_batch)
+        embeddings = encoder(frag_batch, training=False)
         loss = loss_func(embeddings, label_batch, temp = TEMPERATURE, metric = METRIC)
 
         ari, pred_labels = evaluate_ari(embeddings, label_batch)
@@ -169,7 +166,7 @@ def evaluate_performances(dataset, encoder, loss_func, sample_size=10, repeat = 
 
         ax0 = plt.subplot(gs[0])
         im = ax0.imshow(sim_matrix_sorted, origin='lower', cmap='inferno')
-        ax0.set_title(title)
+        ax0.set_title(title, fontsize = 15)
         ax0.set_xticks([])
         ax0.set_yticks([])
 
@@ -260,6 +257,7 @@ def sample_and_fragment_batch_from_generator(generator, sample_size=10):
 class FragmentEncoder(tf.keras.Model):
     def __init__(self, embedding_dim=64, **kwargs):
         super().__init__(**kwargs)
+        self.embedding_dim = embedding_dim
         self.encoder = tf.keras.Sequential([
             layers.Conv2D(32, kernel_size=3, strides=1, padding='valid', activation='relu'),
             layers.BatchNormalization(),
@@ -268,14 +266,15 @@ class FragmentEncoder(tf.keras.Model):
             layers.GlobalAveragePooling2D(),
             layers.Dense(embedding_dim)
         ])
-        self.embedding_dim = embedding_dim  # store this for config
 
     def call(self, x):
         return self.encoder(x)
 
     def get_config(self):
         config = super().get_config()
-        config.update({"embedding_dim": self.embedding_dim})
+        config.update({
+            "embedding_dim": self.embedding_dim
+        })
         return config
 
     @classmethod
@@ -552,8 +551,10 @@ def train_model_CL(
                 steps_without_improvement = 0  # Reset early stopping counter
 
                 # Save the best model
-                checkpoint_path = f"{checkpoint_folder}/best_model_CL_%s.weights.h5" % EMBEDDING_DIM
-                encoder.save_weights(checkpoint_path)
+                checkpoint_path = f"{checkpoint_folder}/best_model_CL_{EMBEDDING_DIM}.keras"
+                encoder.save(checkpoint_path)
+                
+                #encoder.save_weights(checkpoint_path)
                 print(f"Improved ARI or val loss. Model saved to {checkpoint_path}")
             else:
                 # No improvement, increment counter
@@ -746,66 +747,61 @@ def train_model_BCE(
 
 
 if __name__ == "__main__":
-    mode = "metrics"  # Choose from: "train_CL", "train_BCE", "metrics", "visualize"
-    
-    mode = "visualize"
-    
-    #mode = "visualize"
-    
-    #mode = "train_CL"
-    
-    # Editable parameters
-    data_path = "data"
-    model_checkpoint = "model/best_model_CL_%s.weights.h5" % EMBEDDING_DIM # or "model/best_model_BCE.keras"
-    
-    if mode == "train_BCE":
-        train_model_BCE(data_path, "model", embedding_dim=EMBEDDING_DIM)
-    
-    elif mode == "train_CL":
-        train_model_CL(data_path, "model", embedding_dim=EMBEDDING_DIM)
-    
-    elif mode in {"metrics", "visualize"}:
-        # Load data and model
-        dataset = Imagenet64(data_path)
-        encoder = FragmentEncoder(embedding_dim=EMBEDDING_DIM)
-        encoder.build(input_shape=(None, 16, 16, 3))
-        encoder.load_weights(model_checkpoint)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data_path", type=str, default="data", help="Path to dataset folder")
+    parser.add_argument("--model_checkpoint", type=str, help="Path to model weights file (for eval/visualization)")
+    parser.add_argument("--loss", choices=["CL", "BCE"], help="Loss function to use during training")
+    parser.add_argument("--mode", choices=["train", "metrics", "visualize"], default="train", help="Which mode to run")
+    parser.add_argument("--embedding_dim", type=int, default=8, help="Embedding dimensionality")
 
-        # Determine appropriate loss function
-        if "BCE" in model_checkpoint:
+    args = parser.parse_args()
+
+    if args.mode == "train":
+        if args.loss == "CL":
+            train_model_CL(args.data_path, "model", embedding_dim=args.embedding_dim)
+        elif args.loss == "BCE":
+            train_model_BCE(args.data_path, "model", embedding_dim=args.embedding_dim)
+        else:
+            raise ValueError("When using --mode train, you must specify --loss CL or --loss BCE")
+
+    else:
+        # Load model for evaluation or visualization
+        dataset = Imagenet64(args.data_path)
+        encoder = FragmentEncoder(embedding_dim=args.embedding_dim)
+        encoder.build(input_shape=(None, 16, 16, 3))
+        encoder.load_weights(args.model_checkpoint)
+
+        # Pick loss type automatically from model filename
+        if "BCE" in args.model_checkpoint:
             loss_func = pairwise_bce_loss
         else:
             loss_func = nt_xent_loss
 
-        # Evaluation configuration
-        if mode == "metrics":
+        if args.mode == "metrics":
             print("Running metrics collection on large validation set...")
             val_loss, val_mcc, val_auc, val_ari = evaluate_performances(
                 dataset=dataset,
                 encoder=encoder,
                 loss_func=loss_func,
                 sample_size=10,
-                repeat=5,  #sample 25 time 10 images to more robustly evaluate 
+                repeat=5,
                 step="final",
                 plot_clusters=False,
-                show_inline = True
+                show_inline=True
             )
-        elif mode == "visualize":
+        elif args.mode == "visualize":
             print("Generating visualizations on small batch...")
             val_loss, val_mcc, val_auc, val_ari = evaluate_performances(
                 dataset=dataset,
                 encoder=encoder,
                 loss_func=loss_func,
                 sample_size=10,
-                repeat=1,  #only sample 10 images a single time to visualize
+                repeat=1,
                 step="viz",
                 plot_clusters=True,
-                show_inline = True
+                show_inline=True
             )
 
         print("\nEvaluation Results:")
         print(f"Val Loss: {val_loss:.4f}")
         print(f"MCC: {val_mcc:.4f}, AUC: {val_auc:.4f}, ARI: {val_ari:.4f}")
-    
-    else:
-        raise ValueError("Unknown mode. Use 'train_CL', 'train_BCE', 'metrics', or 'visualize'.")

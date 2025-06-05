@@ -22,16 +22,19 @@ def main(data_path, model_checkpoint):
 
     is_bce = "BCE" in model_checkpoint.name
 
-    # Load dataset
-    dataset = Imagenet64(str(data_path))
+
 
     # Load model
-    encoder = FragmentEncoder(embedding_dim=EMBEDDING_DIM)
-    encoder.build(input_shape=(None, 16, 16, 3))
-    encoder.load_weights(str(model_checkpoint))
+    encoder = tf.keras.models.load_model(
+        str(model_checkpoint),  
+        custom_objects={"FragmentEncoder": FragmentEncoder}
+    )
 
     # Loss function
     loss_func = pairwise_bce_loss if is_bce else nt_xent_loss
+    
+    # Load dataset
+    dataset = Imagenet64(str(data_path))
 
     # Run visualization (small batch + cluster plots enabled)
     val_loss, val_mcc, val_auc, val_ari = evaluate_performances(
@@ -46,8 +49,8 @@ def main(data_path, model_checkpoint):
     )
 
     print("\nVisualization Completed:")
-    print(f"Val Loss: {val_loss:.4f}")
-    print(f"MCC: {val_mcc:.4f}, AUC: {val_auc:.4f}, ARI: {val_ari:.4f}")
+    print(f"  Val Loss: {val_loss:.4f}")
+    print(f"  MCC: {val_mcc:.4f}, AUC: {val_auc:.4f}, Mean ARI: {val_ari:.4f}")
     print("Plots saved to the 'Figure/' directory.")
 
 
