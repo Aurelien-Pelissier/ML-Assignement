@@ -19,7 +19,7 @@ python collect_metrics.py --data_path "data" --model_checkpoint "model/best_mode
 
 This evaluates the model by:
 
-* Reconstructing full images from fragments using **KMeans clustering**
+* Reconstructing full images from fragments using **KMeans clustering** and pairwise distances from embeddings
 * Measuring **Adjusted Rand Index (ARI)** to quantify clustering accuracy
 * Reporting **MCC** (Matthews Correlation Coefficient) and **AUC** (ROC) using fragment similarity scores
 
