@@ -30,7 +30,7 @@ This evaluates the model by:
 To visualize clustering and similarities for a **single batch of 10 validation images**, run:
 
 ```bash
-python src/visualize_only.py --data_path "data" --model_checkpoint "model/best_model_BCE_8.keras"
+python src/visualize_only.py --data_path "data" --model_checkpoint "model/best_model_CL_8.keras"
 ```
 
 This will generate:
