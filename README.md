@@ -14,7 +14,7 @@ This project trains a neural encoder to produce meaningful embeddings for image 
 By default, this samples **10 images at a time**, repeating the process 50× to robustly evaluate the model on ~500 images (10% of the full validation set):
 
 ```bash
-python src/collect_metrics.py --data_path "data" --model_checkpoint "model/best_model_CL_8.weights.h5"
+python src/collect_metrics.py --data_path "data" --model_checkpoint "model/best_model_CL_8.keras"
 ````
 
 This evaluates the model by:
@@ -30,7 +30,7 @@ This evaluates the model by:
 To visualize clustering and similarities for a **single batch of 10 validation images**, run:
 
 ```bash
-python src/visualize_only.py --data_path "data" --model_checkpoint "model/best_model_CL_8.weights.h5"
+python src/visualize_only.py --data_path "data" --model_checkpoint "model/best_model_BCE_8.keras"
 ```
 
 This will generate:
