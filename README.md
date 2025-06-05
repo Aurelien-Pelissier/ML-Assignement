@@ -11,7 +11,7 @@ This project trains a neural encoder to produce meaningful embeddings for image 
 
 ### ➤ Run metrics on the validation set
 
-By default, this samples **10 images at a time**, repeating the process 25× to robustly evaluate the model on ~500 images (10% of the full validation set):
+By default, this samples **10 images at a time**, repeating the process 50× to robustly evaluate the model on ~500 images (10% of the full validation set):
 
 ```bash
 python collect_metrics.py --data_path "data" --model_checkpoint "model/best_model_CL_8.weights.h5"
@@ -19,7 +19,7 @@ python collect_metrics.py --data_path "data" --model_checkpoint "model/best_mode
 
 This evaluates the model by:
 
-* Reconstructing full images from fragments using **KMeans clustering**
+* Reconstructing full images from fragments using **KMeans clustering** and pairwise distances from embeddings
 * Measuring **Adjusted Rand Index (ARI)** to quantify clustering accuracy
 * Reporting **MCC** (Matthews Correlation Coefficient) and **AUC** (ROC) using fragment similarity scores
 
@@ -46,7 +46,7 @@ This will generate:
 To retrain the model from scratch using either contrastive loss (NT-Xent) or pairwise BCE:
 
 ```bash
-# For contrastive loss
+# For contrastive loss (NT-Xent)
 python train.py -CL
 
 # For BCE loss
@@ -105,19 +105,4 @@ Two training losses available:
 * `nt_xent_loss`: Normalized Temperature-scaled Cross Entropy (contrastive loss)
 * `pairwise_bce_loss`: Binary classification on all fragment pairs (positive/negative)
 
----
-
-## 📧 Contact
-
-For questions or collaboration, please reach out to **\[Your Name or GitHub handle]**
-
----
-
-## ✅ TODO (optional)
-
-* [ ] Add example visualizations in README
-* [ ] Support more datasets (e.g. CIFAR-10, STL-10)
-* [ ] Add `--umap` or `--pca` flag to visualization script
-
-```
 
