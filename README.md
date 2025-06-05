@@ -105,19 +105,5 @@ Two training losses available:
 * `nt_xent_loss`: Normalized Temperature-scaled Cross Entropy (contrastive loss)
 * `pairwise_bce_loss`: Binary classification on all fragment pairs (positive/negative)
 
----
-
-## 📧 Contact
-
-For questions or collaboration, please reach out to **\[Your Name or GitHub handle]**
-
----
-
-## ✅ TODO (optional)
-
-* [ ] Add example visualizations in README
-* [ ] Support more datasets (e.g. CIFAR-10, STL-10)
-* [ ] Add `--umap` or `--pca` flag to visualization script
-
 ```
 
