@@ -1,5 +1,5 @@
 
-# SampleHuman Assignment
+# ML Assignment
 
 **Self-Supervised Image Fragment Matching via Contrastive Representation Learning**
 
@@ -55,8 +55,8 @@ python src/main.py --loss BCE
 
 Checkpoints will be saved to the `model/` folder as:
 
-* `best_model_CL_<dim>.weights.h5`
-* `best_model_BCE_<dim>.weights.h5`
+* `best_model_CL_<dim>.keras`
+* `best_model_BCE_<dim>.keras`
 
 You can change the embedding dimension or training steps by editing `train.py`.
 
