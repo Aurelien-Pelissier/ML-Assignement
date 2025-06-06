@@ -100,7 +100,7 @@ def evaluate_performances(dataset, encoder, loss_func, sample_size=10, repeat = 
             
         plt.figure(figsize=(6, 5))
         plt.scatter(reduced[:, 0], reduced[:, 1], c=true_labs, s=20, alpha=0.7, cmap='tab10')
-        plt.title(title)
+        plt.title(title, fontsize = 15)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         plt.tight_layout()
