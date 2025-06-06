@@ -36,7 +36,7 @@ python src/visualize_only.py --data_path "data" --model_checkpoint "model/best_m
 This will generate:
 
 * A 2D projection (UMAP or PCA) of fragment embeddings colored by image ID
-* A similarity matrix (Ordered by images or by clusters)
+* Two similarity matrix (Ordered by images or by clusters)
 * Plots saved to the `Figure/` directory
 
 ---
