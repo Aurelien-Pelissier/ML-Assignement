@@ -74,7 +74,7 @@ def evaluate_performances(dataset, encoder, loss_func, sample_size=10, repeat = 
     
     if plot_clusters:
     
-        # Optional: visualize only the first 100 fragments sorted by label
+        # Optional: visualize only the first 160 fragments sorted by label
         sorted_indices = np.argsort(true_labs)[:160] # First 10 images
         embs = embs[sorted_indices]
         true_labs = true_labs[sorted_indices]
@@ -125,7 +125,7 @@ def evaluate_performances(dataset, encoder, loss_func, sample_size=10, repeat = 
         sim_matrix[sim_matrix<0.5] = 0.5
             
             
-        title = f"Similarity matrix for 100 fragments (ARI = {ari:.3f}), step = {step}"    
+        title = f"Similarity matrix for 160 fragments (ARI = {ari:.3f}), step = {step}"    
         plot_path = f"Figure/imshow_sim.{step}.png"
         
         fig = plt.figure(figsize=(8, 8))
