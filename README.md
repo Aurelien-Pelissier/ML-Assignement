@@ -65,7 +65,7 @@ You can change the embedding dimension or training steps by editing `train.py`.
 ## 📂 Project Structure
 
 ```
-├── data/                 # ImageNet64 dataset
+├── data/                 # ImageNet64 dataset - only validation data provided in this repo
 ├── model/                # Saved model weights
 ├── Figure/               # Evaluation plots
 ├── src/
