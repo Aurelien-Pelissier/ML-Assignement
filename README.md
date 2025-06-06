@@ -66,7 +66,7 @@ You can change the embedding dimension or training steps by editing `train.py`.
 
 ```
 ├── data/                 # ImageNet64 dataset - only validation data provided in this repo
-├── model/                # Saved model weights
+├── model/                # Saved model checkpoints
 ├── Figure/               # Evaluation plots
 ├── src/
 │   ├── train.py          # Training and evaluation logic
