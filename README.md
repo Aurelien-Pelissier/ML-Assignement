@@ -1,5 +1,5 @@
 
-# SampleHuman Assignment
+# ML Assignment
 
 **Self-Supervised Image Fragment Matching via Contrastive Representation Learning**
 
