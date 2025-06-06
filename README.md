@@ -35,6 +35,7 @@ python src/visualize_only.py --data_path "data" --model_checkpoint "model/best_m
 
 This will generate:
 
+* Two histograms showing the distance distribution between fragments from the same image vs. across different images
 * A 2D projection (UMAP or PCA) of fragment embeddings colored by image ID
 * Two similarity matrix (With indices ordered by images or by clusters)
 * Plots saved to the `Figure/` directory
