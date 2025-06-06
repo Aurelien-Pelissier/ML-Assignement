@@ -32,6 +32,8 @@ def init_augmentor():
 class Imagenet64(object):
     def __init__(self, data_path):
         self.data_path = Path(str(data_path))
+        
+        print('Loading data...')
 
         train_files = os.listdir(self.data_path / "train_data")
         x_train = []

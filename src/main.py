@@ -47,7 +47,7 @@ def evaluate_performances(dataset, encoder, loss_func, sample_size=10, repeat = 
     
 
     for i in range(repeat):
-        print(f"Repeat {i+1}/{repeat}")
+        print(f"Eval Repeat {i+1}/{repeat}")
         
         fragments, labels = sample_and_fragment_val_images(dataset, sample_size=sample_size, seed=42 + i)
         frag_batch = tf.convert_to_tensor(fragments, dtype=tf.float32)
